@@ -1,0 +1,39 @@
+-- MySQL 5.7 / MariaDB compatible upgrade (run if devsinc-upgrade.sql fails on ALTER)
+
+CREATE TABLE IF NOT EXISTS FeaturedLogos (
+  FeaturedLogoId INT AUTO_INCREMENT PRIMARY KEY,
+  Name VARCHAR(200) NOT NULL,
+  ImageUrl VARCHAR(500),
+  DisplayOrder INT NOT NULL DEFAULT 0,
+  IsActive BOOLEAN NOT NULL DEFAULT 1
+);
+
+CREATE TABLE IF NOT EXISTS Awards (
+  AwardId INT AUTO_INCREMENT PRIMARY KEY,
+  Title VARCHAR(250) NOT NULL,
+  ImageUrl VARCHAR(500),
+  DisplayOrder INT NOT NULL DEFAULT 0,
+  IsActive BOOLEAN NOT NULL DEFAULT 1
+);
+
+CREATE TABLE IF NOT EXISTS Partnerships (
+  PartnershipId INT AUTO_INCREMENT PRIMARY KEY,
+  Name VARCHAR(250) NOT NULL,
+  ImageUrl VARCHAR(500),
+  DisplayOrder INT NOT NULL DEFAULT 0,
+  IsActive BOOLEAN NOT NULL DEFAULT 1
+);
+
+CREATE TABLE IF NOT EXISTS Technologies (
+  TechnologyId INT AUTO_INCREMENT PRIMARY KEY,
+  Name VARCHAR(150) NOT NULL,
+  Category VARCHAR(100) NOT NULL,
+  IconUrl VARCHAR(500),
+  DisplayOrder INT NOT NULL DEFAULT 0,
+  IsActive BOOLEAN NOT NULL DEFAULT 1
+);
+
+-- Run each ALTER separately; skip if column already exists
+-- ALTER TABLE ContactMessages ADD COLUMN CompanyUrl VARCHAR(500) NULL;
+-- ALTER TABLE ContactMessages ADD COLUMN Region VARCHAR(150) NULL;
+-- ALTER TABLE ContactMessages ADD COLUMN IsJobSeeker VARCHAR(10) NULL DEFAULT 'No';

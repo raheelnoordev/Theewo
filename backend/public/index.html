@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EWO Technologies | Enterprise Product & Software Engineering</title>
+    <link rel="preload" href="/videos/ewoHomebgVideo.mp4" as="video" type="video/mp4" />
+    <style>
+      #hero-boot {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        overflow: hidden;
+        background: #04243f;
+        display: none;
+      }
+      #hero-boot.is-home { display: block; }
+      #hero-boot.is-adopted { display: none !important; }
+      #hero-boot-video {
+        width: 100%;
+        height: 100%;
+        -o-object-fit: cover;
+           object-fit: cover;
+      }
+      html, body { margin: 0; background: #fff; }
+      #root { position: relative; z-index: 1; }
+    </style>
+    <script type="module" crossorigin src="/assets/index-DiczAvn0.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DG8-vS6P.css">
+  </head>
+  <body>
+    <!-- Starts before React; Home will adopt this same <video> into the hero (no second download) -->
+    <div id="hero-boot" aria-hidden="true">
+      <video
+        id="hero-boot-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        webkit-playsinline
+        preload="auto"
+        disablepictureinpicture
+      >
+        <source src="/videos/ewoHomebgVideo.mp4" type="video/mp4" />
+      </video>
+    </div>
+    <div id="root"></div>
+    <script>
+      (function () {
+        var boot = document.getElementById('hero-boot');
+        var video = document.getElementById('hero-boot-video');
+        if (!boot || !video) return;
+
+        function isHome() {
+          var p = location.pathname;
+          return p === '/' || p === '';
+        }
+
+        function ensurePlaying() {
+          if (!isHome() || document.hidden) return;
+          video.muted = true;
+          video.defaultMuted = true;
+          video.playsInline = true;
+          video.loop = true;
+          if (video.paused || video.ended) {
+            var p = video.play();
+            if (p && p.catch) p.catch(function () {});
+          }
+        }
+
+        function sync() {
+          if (isHome()) {
+            boot.classList.add('is-home');
+            ensurePlaying();
+          } else {
+            boot.classList.remove('is-home');
+            try { video.pause(); } catch (e) {}
+          }
+        }
+
+        sync();
+        video.addEventListener('pause', function () {
+          // Browsers sometimes pause during buffer stalls — resume on Home
+          setTimeout(ensurePlaying, 50);
+        });
+        video.addEventListener('stalled', ensurePlaying);
+        video.addEventListener('waiting', ensurePlaying);
+        video.addEventListener('suspend', ensurePlaying);
+        video.addEventListener('ended', function () {
+          video.currentTime = 0;
+          ensurePlaying();
+        });
+        document.addEventListener('visibilitychange', function () {
+          if (!document.hidden) ensurePlaying();
+        });
+        setInterval(ensurePlaying, 2000);
+
+        window.__ewoSyncHeroVideo = sync;
+        window.__ewoEnsureHeroPlaying = ensurePlaying;
+        window.__ewoHeroVideoEl = video;
+        window.__ewoHeroBootEl = boot;
+      })();
+    </script>
+  </body>
+</html>

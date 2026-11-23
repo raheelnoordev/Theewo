@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EWO Technologies | Enterprise Product & Software Engineering</title>
+    <link rel="preload" href="/videos/ewoHomebgVideo.mp4" as="video" type="video/mp4" />
+    <style>
+      #hero-boot {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 70vh;
+        z-index: 0;
+        pointer-events: none;
+        overflow: hidden;
+        background: #04243f;
+      }
+      #hero-boot.is-home { display: block; }
+      #hero-boot-video {
+        width: 100%;
+        height: 100%;
+        -o-object-fit: cover;
+           object-fit: cover;
+      }
+      html, body { margin: 0; background: #fff; position: relative; }
+      #root { position: relative; z-index: 1; }
+    </style>
+    <script type="module" crossorigin src="/assets/index-DfemPWxU.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CqWVyT69.css">
+  </head>
+  <body>
+    <!-- Plays immediately on first paint — does not wait for React or APIs -->
+    <div id="hero-boot" aria-hidden="true">
+      <video
+        id="hero-boot-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+      >
+        <source src="/videos/ewoHomebgVideo.mp4" type="video/mp4" />
+      </video>
+    </div>
+    <div id="root"></div>
+    <script>
+      (function () {
+        var boot = document.getElementById('hero-boot');
+        var video = document.getElementById('hero-boot-video');
+        if (!boot || !video) return;
+        function isHome() {
+          var p = location.pathname;
+          return p === '/' || p === '';
+        }
+        function sync() {
+          if (isHome()) {
+            boot.classList.add('is-home');
+            video.muted = true;
+            video.playsInline = true;
+            var p = video.play();
+            if (p && p.catch) p.catch(function () {});
+          } else {
+            boot.classList.remove('is-home');
+            video.pause();
+          }
+        }
+        sync();
+        window.__ewoSyncHeroVideo = sync;
+      })();
+    </script>
+  </body>
+</html>
